@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <!-- Importing Layui CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/layui/2.7.6/css/layui.css">
+
+    <!-- Custom Styles -->
+    <style>
+        /* Page styling */
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Login form container */
+        .login-container {
+            width: 360px;
+            padding: 40px;
+            background-color: #fff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Form item styling */
+        .layui-form-item {
+            margin-bottom: 20px;
+        }
+
+        /* Title styling */
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-title h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 
+    Login Form Container
+    Contains the login form with fields for username and password, and displays form errors if any.
+-->
+<div class="login-container">
+    <!-- Login Title -->
+    <div class="login-title">
+        <h2>Login</h2>
+    </div>
+
+    <!-- Login Form -->
+    <form method="post" class="layui-form">
+        {% csrf_token %}
+        <!-- Username Field -->
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="username">Username</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required id="username" class="layui-input" placeholder="Enter your username">
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="password">Password</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" required id="password" class="layui-input" placeholder="Enter your password">
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="layui-form-item">
+            <button type="submit" class="layui-btn layui-btn-fluid">Login</button>
+        </div>
+    </form>
+
+    <!-- Error Message Display -->
+    {% if form.errors %}
+        <div class="layui-form-item">
+            <div class="layui-bg-red" style="padding: 10px; border-radius: 5px; text-align: center; color: white; margin-top: 10px;">
+                <i class="layui-icon layui-icon-tips" style="margin-right: 5px;"></i>
+                Your username and password didn't match. Please try again.
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- 
+    Importing Layui JS
+    Initializes Layui form module for form handling
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/layui/2.7.6/layui.js"></script>
+<script>
+    // Using Layui form module
+    layui.use('form', function(){
+        var form = layui.form;
+    });
+</script>
+
+</body>
+</html>

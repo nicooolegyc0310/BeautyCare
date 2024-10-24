@@ -1,0 +1,16 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}My Profile - BeautyCare{% endblock %}
+
+{% block content %}
+
+<!-- User Information Card -->
+<div class="layui-card" style="margin-bottom: 40px;">
+    <div class="layui-card-header">User Information</div>
+    <div class="layui-card-body">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+</div>
+
+{% endblock %}

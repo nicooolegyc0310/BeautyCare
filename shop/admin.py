@@ -39,4 +39,4 @@ class PurchaseOrderAdmin(admin.ModelAdmin):
     """
     list_display = ('product_name', 'user', 'quantity', 'total_price', 'created_at')
     search_fields = ('product_name', 'user__username')
-    list_filter = ('created_at')
+    list_filter = ('created_at',)

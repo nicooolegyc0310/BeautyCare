@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BeautyCare{% endblock %}</title>
+
+    <!-- Importing Layui CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/layui/2.7.6/css/layui.css">
+
+    <style>
+        /* Body Styling */
+        body {
+            background-color: #f2f2f2;
+        }
+
+        /* Navigation Bar Styling */
+        .layui-header {
+            position: relative;  
+            height: 60px;  
+            line-height: 60px;  
+        }
+
+        /* Main Content Container */
+        .main-container {
+            padding: 20px;
+            margin-top: 80px;  
+        }
+
+        /* Center Content and Set Maximum Width */
+        .layui-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 
+    Full-width Navigation Bar
+    Uses Layui's layout classes to create a header with navigation links
+-->
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">BeautyCare Dashboard</div>
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item {% if request.resolver_match.url_name == 'dashboard' %}layui-this{% endif %}">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            {% if user.is_authenticated %}
+                <li class="layui-nav-item"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li class="layui-nav-item"><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<!-- 
+    Main Content Area
+    Placeholder for the main content block, which will be populated by child templates
+-->
+<div class="layui-container">
+    <div class="main-container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<!-- 
+    Footer Section
+    Contains copyright information for BeautyCare
+-->
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12" style="text-align: center; padding: 10px;">
+            <p style="color: #666;">© 2024 BeautyCare | Making Every Beauty Shine Brighter</p>
+        </div>
+    </div>
+</div>
+
+<!-- 
+    Importing Layui Scripts
+    Initializes the element module for navigation functionality
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/layui/2.7.6/layui.js"></script>
+<script>
+    layui.use(['element'], function(){
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>
