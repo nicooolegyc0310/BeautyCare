@@ -1,0 +1,96 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Product Categories - BeautyCare{% endblock %}
+
+{% block content %}
+
+<style>
+    .layui-btn {
+        margin-left: 0 !important;
+    }
+</style>
+
+<!-- Category Filter Form -->
+<form method="get" style="text-align: center; margin-bottom: 20px;">
+    <select name="category" class="layui-select" style="width: 300px;">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+        <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="layui-btn">Filter</button>
+</form>
+
+<!-- Display Product Cards -->
+<div class="layui-row layui-col-space30">
+    {% for product in page_obj %}
+    <div class="layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header" style="text-align: center; font-size: 18px;">
+                {{ product.name }} - {{ product.brand }}
+            </div>
+            <div class="layui-card-body" style="padding: 20px;">
+                
+                <!-- Product Image -->
+                <div style="text-align: center;">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
+                    {% else %}
+                        <!-- Placeholder Image if no product image is available -->
+                        <img src="/static/images/placeholder.png" alt="No Image" 
+                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
+                    {% endif %}
+                </div>
+
+                <!-- Product Details -->
+                <div style="padding-top: 20px;">
+                    <p><strong>Price:</strong> ${{ product.price }}</p>
+                    <p><strong>Category:</strong> {{ product.category }}</p>
+                    <p><strong>Rating:</strong> {{ product.rating }} / 5.0 ({{ product.reviews_count }} reviews)</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="{% url 'product_detail' product.id %}" 
+                       class="layui-btn layui-btn-normal" 
+                       style="display: block; width: 100%; margin-bottom: 5px;">View Details</a>
+                    <button class="layui-btn layui-btn-danger" 
+                       style="display: block; width: 100%;">
+                        Add to Purchase Order
+                    </button>               
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <!-- Message if no products are found -->
+    <p style="text-align: center;">No products found.</p>
+    {% endfor %}
+</div>
+
+<!-- Pagination Controls -->
+<div style="text-align: center; margin-top: 20px;">
+    <div class="layui-btn-group">
+        {% if page_obj.has_previous %}
+            <a class="layui-btn" href="?page=1&category={{ selected_category }}">First</a>
+            <a class="layui-btn" href="?page={{ page_obj.previous_page_number }}&category={{ selected_category }}">Previous</a>
+        {% endif %}
+
+        <!-- Page Number Links -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+                <span class="layui-btn layui-btn-primary layui-btn-disabled">{{ num }}</span>
+            {% else %}
+                <a class="layui-btn" href="?page={{ num }}&category={{ selected_category }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="layui-btn" href="?page={{ page_obj.next_page_number }}&category={{ selected_category }}">Next</a>
+            <a class="layui-btn" href="?page={{ page_obj.paginator.num_pages }}&category={{ selected_category }}">Last</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
