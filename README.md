@@ -12,7 +12,13 @@
 
 
 - **User Authentication**:
+**Create a Django Superuser**:
 
+To access the Django admin panel and manage users, create a superuser:
+```
+python manage.py createsuperuser
+```
+- Follow the prompts to enter a username, email, and password.
 
 ## Tech Stack
 
@@ -66,8 +72,12 @@ mysql -u your_db_user -p
 CREATE DATABASE beauty;
 USE beauty;
 ```
+
 - **c. Import the SQL File**
+```
 mysql -u your_db_user -p beauty < shop_makeupproduct.sql
+```
+
 - **d. Replace the 'NAME', 'USER' and 'PASSWORD' in settings.py**
 ```
 DATABASES = {
