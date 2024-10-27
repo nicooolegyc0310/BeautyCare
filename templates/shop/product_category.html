@@ -8,6 +8,68 @@
     .layui-btn {
         margin-left: 0 !important;
     }
+
+    /* Ensure consistent card height and layout */
+    .layui-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .layui-card-header {
+        text-align: center;
+        font-size: 18px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 70px; /* Adjusted height for text visibility */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .product-name {
+        font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-brand {
+        font-size: 16px;
+        color: gray;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-image {
+        width: 100%;
+        max-height: 180px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 10px; /* Add spacing between image and details */
+    }
+
+    .product-details {
+        padding-top: 10px;
+        min-height: 100px;  /* Consistent height for product details */
+        overflow-y: auto;
+        margin-bottom: 10px; /* Add margin for spacing */
+    }
+
+    .layui-card-body {
+        flex-grow: 1; /* Allow content to expand and keep cards aligned */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .product-actions {
+        display: flex;
+        flex-direction: column;
+        margin-top: auto; /* Push buttons to the bottom */
+    }
 </style>
 
 <!-- Category Filter Form -->
@@ -26,32 +88,32 @@
     {% for product in page_obj %}
     <div class="layui-col-md3">
         <div class="layui-card">
-            <div class="layui-card-header" style="text-align: center; font-size: 18px;">
-                {{ product.name }} - {{ product.brand }}
+            <!-- Product Name and Brand -->
+            <div class="layui-card-header">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="product-brand">{{ product.brand }}</div>
             </div>
             <div class="layui-card-body" style="padding: 20px;">
                 
                 <!-- Product Image -->
                 <div style="text-align: center;">
                     {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" 
-                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
                     {% else %}
                         <!-- Placeholder Image if no product image is available -->
-                        <img src="/static/images/placeholder.png" alt="No Image" 
-                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
+                        <img src="/static/images/placeholder.png" alt="No Image" class="product-image">
                     {% endif %}
                 </div>
 
                 <!-- Product Details -->
-                <div style="padding-top: 20px;">
+                <div class="product-details">
                     <p><strong>Price:</strong> ${{ product.price }}</p>
                     <p><strong>Category:</strong> {{ product.category }}</p>
                     <p><strong>Rating:</strong> {{ product.rating }} / 5.0 ({{ product.reviews_count }} reviews)</p>
                 </div>
 
                 <!-- Action Buttons -->
-                <div style="text-align: center; margin-top: 20px;">
+                <div class="product-actions">
                     <a href="{% url 'product_detail' product.id %}" 
                        class="layui-btn layui-btn-normal" 
                        style="display: block; width: 100%; margin-bottom: 5px;">View Details</a>
@@ -73,8 +135,8 @@
 <div style="text-align: center; margin-top: 20px;">
     <div class="layui-btn-group">
         {% if page_obj.has_previous %}
-            <a class="layui-btn" href="?page=1&category={{ selected_category }}">First</a>
-            <a class="layui-btn" href="?page={{ page_obj.previous_page_number }}&category={{ selected_category }}">Previous</a>
+            <a class="layui-btn" href="?page=1{% if selected_category %}&category={{ selected_category }}{% endif %}">First</a>
+            <a class="layui-btn" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Previous</a>
         {% endif %}
 
         <!-- Page Number Links -->
@@ -82,13 +144,13 @@
             {% if num == page_obj.number %}
                 <span class="layui-btn layui-btn-primary layui-btn-disabled">{{ num }}</span>
             {% else %}
-                <a class="layui-btn" href="?page={{ num }}&category={{ selected_category }}">{{ num }}</a>
+                <a class="layui-btn" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <a class="layui-btn" href="?page={{ page_obj.next_page_number }}&category={{ selected_category }}">Next</a>
-            <a class="layui-btn" href="?page={{ page_obj.paginator.num_pages }}&category={{ selected_category }}">Last</a>
+            <a class="layui-btn" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a>
+            <a class="layui-btn" href="?page={{ page_obj.paginator.num_pages }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Last</a>
         {% endif %}
     </div>
 </div>
