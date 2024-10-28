@@ -7,6 +7,14 @@
 
 BeautyCare leverages **OpenAI's ChatGPT** to provide users with the latest beauty trends. It fetches beauty news using ChatGPT, saving it to the database for each user and displaying it on their dashboard. This feature adds an AI-driven, dynamic content experience, keeping users informed about recent beauty trends and industry updates.
 
+## Screenshots
+
+![Login Page](images/Login%20Page.png)
+![Dashboard](images/Dashboard.png)
+![Product Categories Page](images/Product%20Categories%20Page.png)
+![Paginated Product List](images/Paginated%20Product%20List.png)
+![Purchase Orders Page](images/Purchase%20Orders%20Page.png)
+
 ## Features
 
 - **Admin Interface**: Manage products, categories, and orders through Django’s built-in admin panel.
