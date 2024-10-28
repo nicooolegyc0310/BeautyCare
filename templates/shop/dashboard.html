@@ -68,27 +68,15 @@
     <div class="layui-card-header">Beauty News</div>
     <div class="layui-card-body">
         <ul class="layui-timeline">
+            {% for news in beauty_news %}
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title">October 2024</h3>
-                    <p>The latest beauty trends for autumn and winter seasons are released, with more moisturizing and protective cosmetics.</p>
+                    <h3 class="layui-timeline-title">{{ news.date }}</h3>
+                    <p>{{ news.description }}</p>
                 </div>
             </li>
-            <li class="layui-timeline-item">
-                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title">September 2024</h3>
-                    <p>The global beauty expo was held, showcasing innovative beauty technologies and products from leading brands.</p>
-                </div>
-            </li>
-            <li class="layui-timeline-item">
-                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title">August 2024</h3>
-                    <p>Summer promotions kick off, with limited-time offers and exclusive beauty boxes from top brands.</p>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
     </div>
 </div>

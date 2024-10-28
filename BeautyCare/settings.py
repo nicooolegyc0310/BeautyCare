@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = '/shop/dashboard/'
 LOGOUT_REDIRECT_URL = '/shop/login/'
 
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 # Application definition
 
 INSTALLED_APPS = [

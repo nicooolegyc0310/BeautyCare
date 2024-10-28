@@ -45,3 +45,11 @@ class PurchaseOrder(models.Model):
 
     def __str__(self):
         return f"{self.product_name} - {self.quantity} units by {self.user.username}"
+
+class UserBeautyNews(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    news_data = models.TextField()
+    fetched_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"News for {self.user.username}"

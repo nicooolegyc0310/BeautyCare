@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import MakeupProduct, PurchaseOrder
-from django.http import HttpResponseBadRequest
+from .models import MakeupProduct, PurchaseOrder, UserBeautyNews
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
+import openai
+from django.conf import settings
 
 @login_required
 def dashboard(request):
@@ -160,3 +162,46 @@ def profile(request):
     user = request.user
     orders = PurchaseOrder.objects.filter(user=user) 
     return render(request, 'shop/profile.html', {'user': user, 'orders': orders})
+
+openai.api_key = settings.OPENAI_API_KEY
+
+def get_beauty_news(user):
+    user_news = UserBeautyNews.objects.filter(user=user).first()
+
+    if user_news:
+        return parse_beauty_news(user_news.news_data)
+    
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": "Provide recent beauty news for the past three months."}]
+        )
+        news_text = response['choices'][0]['message']['content']
+        UserBeautyNews.objects.create(user=user, news_data=news_text)
+        return parse_beauty_news(news_text)
+    except openai.error.AuthenticationError:
+        return "Failed to authenticate with OpenAI API."
+    except Exception as e:
+        print("Error during API call:", str(e))
+        return []
+
+def parse_beauty_news(news_text):
+    news_items = news_text.split('\n\n')
+    news_list = []
+
+    for item in news_items:
+        parts = item.split('. ', 1)
+        if len(parts) == 2:
+            date = parts[0]
+            description = parts[1]
+            news_list.append({'date': date.strip(), 'description': description.strip()})
+        else:
+            news_list.append({'date': "Recent Update", 'description': item.strip()})
+
+    return news_list
+
+@login_required
+def dashboard(request):
+    beauty_news = get_beauty_news(request.user)
+    context = {'beauty_news': beauty_news}
+    return render(request, 'shop/dashboard.html', context)
