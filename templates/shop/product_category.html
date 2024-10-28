@@ -117,10 +117,9 @@
                     <a href="{% url 'product_detail' product.id %}" 
                        class="layui-btn layui-btn-normal" 
                        style="display: block; width: 100%; margin-bottom: 5px;">View Details</a>
-                    <button class="layui-btn layui-btn-danger" 
-                       style="display: block; width: 100%;">
-                        Add to Purchase Order
-                    </button>               
+                    <a href="{% url 'add_to_purchase_order' product.id %}" 
+                       class="layui-btn layui-btn-danger" 
+                       style="display: block; width: 100%;">Add to Purchase Order</a>           
                 </div>
             </div>
         </div>

@@ -1,0 +1,70 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Purchase Orders - BeautyCare{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 40px;">Purchase Orders</h2>
+
+<div class="layui-row layui-col-space30">
+    <div class="layui-col-md12">
+        <!-- Purchase Order Table -->
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Specification</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, item in purchase_order.items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.specification|default_if_none:"N/A" }}</td>
+                    <td>{{ item.category|default_if_none:"N/A" }}</td>
+                    <td>
+                        <!-- Quantity Update Form -->
+                        <form method="post" action="{% url 'update_order_quantity' key %}" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 60px; margin-right: 5px; padding: 2px;">
+                            <button type="submit" class="layui-btn layui-btn-normal" style="padding: 2px 5px; font-size: 12px; border-radius: 5px;">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>${{ item.total_price }}</td>
+                    <td>
+                        <!-- Delete Item Form -->
+                        <form method="post" action="{% url 'remove_order_item' key %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="layui-btn layui-btn-danger" style="padding: 2px 5px; font-size: 12px; border-radius: 5px;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Total Amount Display -->
+        <div style="text-align: right; margin-top: 20px;">
+            <strong>Total Amount: ${{ total_price|floatformat:4 }}</strong>
+        </div>
+
+        <!-- Clear and Submit Buttons -->
+        <div style="text-align: right; margin-top: 20px;">
+            <form method="post" action="{% url 'clear_purchase_order' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="layui-btn layui-btn-primary" style="padding: 2px 5px; font-size: 12px; border-radius: 5px;">Clear Purchase Order</button>
+            </form>
+            <form method="post" action="{% url 'submit_purchase_order' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="layui-btn layui-btn-danger" style="padding: 2px 5px; font-size: 12px; border-radius: 5px;">Submit Purchase Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

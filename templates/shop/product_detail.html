@@ -1,0 +1,45 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Product Details - {{ product.name }}{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 40px;">{{ product.name }} - {{ product.brand }}</h2>
+
+<div class="layui-row layui-col-space30">
+    <!-- Product Image Section -->
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; border-radius: 5px;">
+                {% else %}
+                    <img src="/static/images/placeholder.png" alt="No Image" style="width: 100%; height: auto; border-radius: 5px;">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Section -->
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <p><strong>Brand:</strong> {{ product.brand }}</p>
+                <p><strong>Price:</strong> ${{ product.price }}</p>
+                <p><strong>Category:</strong> {{ product.category }}</p>
+                <p><strong>Color:</strong> {{ product.color|default_if_none:"Not specified" }}</p>
+                <p><strong>Size:</strong> {{ product.size|default_if_none:"Not specified" }}</p>
+                <p><strong>Rating:</strong> {{ product.rating }} / 5.0 ({{ product.reviews_count }} reviews)</p>
+                <p><strong>Description:</strong> {{ product.description|default_if_none:"No description available." }}</p>
+                <p><strong>Created At:</strong> {{ product.created_at }}</p>
+
+                <!-- Action Buttons -->
+                <div style="margin-top: 20px;">
+                    <a href="{% url 'product_category' %}" class="layui-btn layui-btn-primary">Back to Products</a>
+                    <a href="{% url 'add_to_purchase_order' product.id %}" class="layui-btn layui-btn-danger">Add to Purchase Order</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
