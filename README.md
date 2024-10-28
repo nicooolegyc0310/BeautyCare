@@ -5,13 +5,12 @@
 
 ## Features
 
-- **Admin Interface**:
+- **Admin Interface**: Manage products, categories, and orders through Django’s built-in admin panel.
 
+- **User Interface**: Allows users to browse, filter, and view product details, manage purchase orders, and view profiles.
 
-- **User Interface**:
+- **User Authentication**: Supports login, logout, and profile management.
 
-
-- **User Authentication**:
 **Create a Django Superuser**:
 
 To access the Django admin panel and manage users, create a superuser:
@@ -23,13 +22,18 @@ python manage.py createsuperuser
 ## Tech Stack
 
 - **Backend**: Django
-- **Frontend**: HTML, CSS
-- **Database**: 
+- **Frontend**: HTML, CSS, LayUI (for styling)
+- **Database**: MySQL
 - **Deployment**: Compatible with deployment platforms like Heroku, AWS, and DigitalOcean
 
 ## Models Description
 
+- **MakeupProduct**: Represents products, including name, brand, price, category, size, color, image, and ratings.
+- **PurchaseOrder**: Represents purchase orders, including user, product details, quantity, and total price.
+
 ## Setup Instructions
+
+### Environment Set Up
 
 - **Create a Virtual Environment**: 
 ```
@@ -61,7 +65,8 @@ pip install Pillow
 pip install mysqlclient
 ```
 
-## Set Up the Database
+### Database Set Up
+
 - **a. Start MySQL Server**
 - **b. Log into MySQL and Create Database**
 ```
@@ -90,6 +95,14 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+```
+
+### Running the Application
+
+- **Run Database Migrations**:
+```
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 - **Run the Django Server**:
